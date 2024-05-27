@@ -2,9 +2,11 @@ import re
 import time
 # from playwright.sync_api import Page, expect
 from playwright.sync_api import sync_playwright
+from playwright.sync_api import Page, expect
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=False, slow_mo=2000)
     page = browser.new_page()
+    
 def test_example(page: Page) -> None:
     page.goto("https://tweakers.net/")
     page.get_by_role("link", name="Nieuws", exact=True).click()
@@ -23,4 +25,6 @@ def test_example(page: Page) -> None:
     page.get_by_placeholder("Zoek in de site").press("Enter")
     page.get_by_text("be quiet! LGA1700").click()
     page.goto("https://www.google.nl/")
+    
+    print("test completed")
     

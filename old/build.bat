@@ -1,3 +1,4 @@
+build.bat
 echo starting build.....
 
 docker build . -t menzis:test_runner
