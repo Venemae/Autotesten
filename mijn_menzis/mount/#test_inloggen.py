@@ -37,3 +37,4 @@ def test_inloggen_menzis(page: Page, page_url: str):
         print("geen emailadres controle")
 
     page.goto(page_url)
+    
