@@ -1,0 +1,48 @@
+# Open Clienten details van verzekerde x
+
+import pytest
+import time
+from playwright.sync_api import Page, Playwright
+from configparser import ConfigParser
+import re
+from playwright.sync_api import Page, expect
+
+# with sync_playwright() as p:
+#     browser = p.chromium.launch(headless=False, slow_mo=3000)
+#     page = browser.new_page()
+
+# Load configuration file
+file = 'config.ini'
+config = ConfigParser()
+config.read(file)
+
+@pytest.mark.parametrize("page_url", [config['PvO']['url']])
+def test_inloggen_PvO(page: Page, page_url: str):
+    page.goto(page_url)
+    page.locator('button:has-text("Accepteren")').click()
+    page.get_by_role("button", name="Ondersteuner Loginstub").click()
+
+#    page.locator('input[placeholder="#Name"]').fill(config['PvO']['relnr'])
+    page.locator("#Name").fill(config['PvO']['relnr'])
+    page.get_by_role("button", name="Inloggen").click()
+    # page.get_by_label("Knop gebruikers menu").click()
+    
+
+#     page.get_by_label("Clienten overzicht").click()
+#     page.locator("#Verzekerdennummer_Value").fil(config['PvO']['verznr1'])
+#     page.get_by_role("button", name="ondersteuner-client-zoeken-button").click()
+
+# #    page.locator('input[placeholder="#Name"]').fill(config['PvO']['relnr'])
+#     page.locator("#Name").fill(config['PvO']['relnr'])
+#     page.get_by_role("button", name="Inloggen").click()
+#     page.get_by_label("Knop gebruikers menu").click()
+    
+    
+    page.get_by_role("link", name="Cliënten overzicht").click()
+    page.get_by_label("Verzekerdennummer of BSN").click()
+    page.get_by_label("Verzekerdennummer of BSN").fill("8631193279")
+    page.get_by_role("button", name="Zoeken").click()
+    #page.get_by_role("button", name="action:GaNaarClientDetails").click()
+    page.click('text="8631193279"')
+    
+    time.sleep(10)

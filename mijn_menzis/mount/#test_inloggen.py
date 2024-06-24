@@ -1,8 +1,12 @@
 import pytest
-from playwright.sync_api import Page, Playwright
+from playwright.sync_api import Page, Playwright, expect
 from configparser import ConfigParser
 import re
-from playwright.sync_api import Page, expect
+
+def run(playwright):
+    browser = playwright.chromium.launch(headless=False)  # Set to True for headless mode
+    context = browser.new_context()
+    page = context.new_page()
 
 # Load configuration file
 file = 'config.ini'
@@ -36,5 +40,25 @@ def test_inloggen_menzis(page: Page, page_url: str):
     else:
         print("geen emailadres controle")
 
-    page.goto(page_url)
+    page.get_by_label("Knop gebruikers menu").click()
+    page.get_by_role("link", name="Mijn verzekering").dblclick()
+    page.get_by_role("tab", name="Uw zorgpolis").click()
+    page.get_by_role("link", name="Gegevens wijzigen").click()
+    page.locator("dl").filter(has_text="NaamS.").get_by_role("link").click()
+    page.get_by_role("button", name="Binnenlands postadres").click()
+    page.get_by_role("link", name=" naar: Mijn gegevens").click()
+    page.locator("dl").filter(has_text="Rekeningnummer voor").get_by_role("link").click()
+    page.get_by_role("link", name=" naar: Mijn gegevens").click()
+    page.locator("dd").filter(has_text="output.webtesten@menzis.").get_by_role("link").click()
+    page.get_by_role("link", name=" naar: Mijn gegevens").click()
+    page.locator("dd").filter(has_text="0591915001Wijzigen").get_by_role("link").click()
+    page.get_by_label("Telefoonnummer 1").click()
+    page.get_by_label("Telefoonnummer 1").fill("0612345677")
+    page.get_by_label("Telefoonnummer 2").click()
+    page.get_by_label("Telefoonnummer 2").fill("0501547892")
+    page.get_by_role("button", name="Wijzigen").click()
+    page.get_by_role("link", name="Terug naar Mijn gegevens").click()
+    page.locator("dl").filter(has_text="Rekeningnummer voor").get_by_role("link").click()
+    page.get_by_role("link", name=" naar: Mijn gegevens").click()
+
     

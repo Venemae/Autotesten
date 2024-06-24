@@ -1,47 +1,60 @@
-# import re
-# from playwright.sync_api import Page, expect
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# #pakket aanpassen
-# def test_example(page: Page) -> None:
-#     page.get_by_role("button", name="Accepteren").click()
-#     page.get_by_label("Knop gebruikers menu").click()
-#     page.get_by_role("button", name="Loginstub", exact=True).click()
-#     page.get_by_placeholder("BSN").click()
-#     page.get_by_placeholder("BSN").fill("7683476495")
-#     page.goto("https://menzis.testsc.otap.menzis.nl/mijn/gegevens/emailadres-controleren?url=/")
-#     page.get_by_label("E-mailadres", exact=True).click()
-#     page.get_by_label("E-mailadres", exact=True).fill("output.webtesten@menzis.nl")
-#     page.get_by_label("E-mailadres", exact=True).press("Tab")
-#     page.get_by_label("Herhaal e-mailadres").fill("output.webtesten@menzis.nl")
-#     page.get_by_role("button", name="Wijzigen").click()
-#     page.get_by_label("Knop gebruikers menu").click()
-#     page.get_by_role("link", name="Mijn verzekering").click()
-#     page.goto("https://menzis.testsc.otap.menzis.nl/mijn/verzekering/pakket-wijzigen")
-#     page.locator("#PakketWijzigenLijst_0__Aanvullendeverzekering_Value").select_option("MEV1")
-#     page.get_by_role("button", name="Volgende").click()
-#     page.goto("https://menzis.testsc.otap.menzis.nl/mijn/verzekering/pakket-wijzigen?done=1")
-#     page.get_by_role("heading", name="Wat kunt u verwachten?").click()
-#     page.get_by_role("heading", name="Klaar!").click()
+def test_example():
+    # Initialize the WebDriver (assuming Chrome, but you can use any browser)
+    driver = webdriver.Chrome()
 
-import re
-from playwright.sync_api import Page, expect
-
-
-def test_example(page: Page) -> None:
-    page.goto("https://intranetapplications.test.otap.loods2.org/TransactionService.Pres.Internal/Default.aspx")
-    page1.get_by_role("link", name="Transacties").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").get_by_role("link", name="VerzekerdeOverzicht").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frVerzekerde\"]").locator("#tbxVerzekerdennummer").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frVerzekerde\"]").locator("#tbxVerzekerdennummer").fill("7683476495")
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frVerzekerde\"]").get_by_role("button", name="ZOEKEN").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").get_by_role("link", name="Status").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").get_by_role("link", name="Relatie").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frBRelatie\"]").locator("#ddlZoekwijze").select_option("1")
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frBRelatie\"]").locator("#tbxRelatienummer").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frBRelatie\"]").locator("#tbxRelatienummer").fill("")
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frBRelatie\"]").locator("#tbxRelatienummer").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frBRelatie\"]").locator("#tbxRelatienummer").fill("7683476495")
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frBRelatie\"]").get_by_role("button", name="ZOEKEN").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").get_by_role("link", name="Status").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frStatus\"]").get_by_text("wacht op autorisatie").click()
-    page1.frame_locator("iframe[name=\"frContent\"]").frame_locator("iframe[name=\"frStatus\"]").get_by_role("button", name="ZOEKEN").click()
+    try:
+        # Navigate to the initial URL
+        driver.get("https://www2.tst.menzis.nl/")
+        
+        # Accept cookies
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Accepteren']"))).click()
+        
+        # Open the user menu
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LABEL, "Knop gebruikers menu"))).click()
+        
+        # Click the Loginstub button
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//button[text()='Loginstub' and @exact='true']"))).click()
+        
+        # Enter BSN
+        bsn_field = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='BSN']")))
+        bsn_field.click()
+        bsn_field.send_keys("4056694174")
+        
+        # Navigate to the email address check page
+        driver.get("https://www2.tst.menzis.nl/mijn/gegevens/emailadres-controleren?url=/")
+        
+        # # Fill in the email address
+        # email_field = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LABEL, "E-mailadres", exact=True)))
+        # email_field.click()
+        # email_field.send_keys("output.webtesten@menzis.nl")
+        # email_field.send_keys(Keys.TAB)
+        
+        # Repeat the email address
+        repeat_email_field = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LABEL, "Herhaal e-mailadres")))
+        repeat_email_field.click()
+        repeat_email_field.send_keys("output.webtesten@menzis.nl")
+        
+        # Navigate to the various pages
+        driver.get("https://www2.tst.menzis.nl/")
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LABEL, "Knop gebruikers menu"))).click()
+        driver.get("https://www2.tst.menzis.nl/mijn/geldzaken")
+        driver.get("https://www2.tst.menzis.nl/mijn/geldzaken/rekeningen/rekening-details")
+        driver.get("https://www2.tst.menzis.nl/mijn/geldzaken/betalingsregelingen/betalingsregeling-aanvragen")
+        
+        # Click on change payment details
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, "Betaalgegevens wijzigen"))).click()
+        
+        # Open the user menu and logout
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LABEL, "Knop gebruikers menu"))).click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.LINK_TEXT, "Uitloggen"))).click()
+    
+    finally:
+        # Close the browser
+        driver.quit()

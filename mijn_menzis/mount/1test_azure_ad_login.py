@@ -1,7 +1,7 @@
 from playwright.sync_api import sync_playwright
 
 def run(playwright):
-    browser = playwright.chromium.launch(headless=False)  # Set to True for headless mode
+    browser = playwright.firefox.launch(headless=False)  # Set to True for headless mode
     context = browser.new_context()
     page = context.new_page()
 
