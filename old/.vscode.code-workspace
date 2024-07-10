@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../../VScode/Testen/.vscode"
+		},
+		{
+			"name": "Autotesten",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
