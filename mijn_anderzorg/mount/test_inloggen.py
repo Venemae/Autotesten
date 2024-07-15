@@ -2,6 +2,7 @@ import pytest
 from playwright.sync_api import Page, Playwright, expect
 from configparser import ConfigParser
 import re
+import time
 
 def run(playwright):
     browser = playwright.chromium.launch(headless=False)  # Set to True for headless mode
@@ -42,23 +43,28 @@ def test_inloggen_menzis(page: Page, page_url: str):
 
     page.get_by_label("Knop gebruikers menu").click()
     page.click('a[href="/mijn/verzekering"]')
-    page.get_by_role("tab", name="Uw zorgpolis").click()
+    page.get_by_role("tab", name="Zorgpolis").click()
     page.get_by_role("link", name="Gegevens wijzigen").click()
-    # page.click('a[href="/mijn/gegevens/adres-wijzigen"]').click()
-    # page.get_by_role("button", name="Binnenlands postadres").click()
-    # page.get_by_role("link", name=" naar: Mijn gegevens").click()
+    page.click('a[href="/mijn/gegevens/adres-wijzigen"]')
+    page.click('#AdresWijzigenTypeAdresBinnenlandsCorrespondentie')
+    page.click('body > div > div.layout.layout-sidebarleft > section > div > div > div > section > div > a')
     page.locator("dl").filter(has_text="Rekeningnummer voor").get_by_role("link").click()
-    page.get_by_role("link", name=" naar: Mijn gegevens").click()
+    page.click('body > div > div.layout.layout-sidebarleft > section > div > div > div > section > div > a')
     page.locator("dd").filter(has_text="output.webtesten@menzis.").get_by_role("link").click()
-    page.get_by_role("link", name=" naar: Mijn gegevens").click()
-    page.locator("dd").filter(has_text="0591915001Wijzigen").get_by_role("link").click()
+    page.get_by_label("Herhaal e-mailadres").fill(config['Inloggen']['email'])
+    page.get_by_role("button", name="Wijzigen").click()
+    page.get_by_label("Knop gebruikers menu").click()
+    page.click('a[href="/mijn/gegevens"]')
+    page.click('#content > div > div > main > section:nth-child(1) > div > div > div.column-2 > div:nth-child(1) > div > div > dl > dd:nth-child(4) > div > a')
     page.get_by_label("Telefoonnummer 1").click()
-    page.get_by_label("Telefoonnummer 1").fill("0612345677")
+    page.get_by_label("Telefoonnummer 1").fill("0612345674")
     page.get_by_label("Telefoonnummer 2").click()
-    page.get_by_label("Telefoonnummer 2").fill("0501547892")
+    page.get_by_label("Telefoonnummer 2").fill("0501547895")
     page.get_by_role("button", name="Wijzigen").click()
     page.get_by_role("link", name="Terug naar Mijn gegevens").click()
     page.locator("dl").filter(has_text="Rekeningnummer voor").get_by_role("link").click()
-    page.get_by_role("link", name=" naar: Mijn gegevens").click()
+    page.click('a.back-button[href="/mijn/gegevens"]')
+    
+    time.sleep(10)
 
     

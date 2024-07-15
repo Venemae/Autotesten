@@ -49,12 +49,10 @@ def test_inloggen_PvO(page: Page, page_url: str):
 #     page.get_by_role("button", name="Inloggen").click()
 #     page.get_by_label("Knop gebruikers menu").click()
     
-    
     page.get_by_role("link", name="Cliënten overzicht").click()
     page.get_by_label("Verzekerdennummer of BSN").click()
-    page.get_by_label("Verzekerdennummer of BSN").fill("8631193279")
-    page.get_by_role("button", name="Zoeken").click()
-    #page.get_by_role("button", name="action:GaNaarClientDetails").click()
-    page.click('text="8631193279"')
-    
+    page.get_by_label("Verzekerdennummer of BSN").fill(config['PvO']['verznr1'])
+    page.click('#ondersteuner-client-zoeken-button')
+    page.click('xpath=//*[@id="summarylist-clienten-form"]/div/ul/li/button')
+        
     time.sleep(10)
