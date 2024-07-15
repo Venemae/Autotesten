@@ -40,19 +40,13 @@ def test_inloggen_PvO(page: Page, page_url: str):
     else:
         print("geen emailadres controle")
 
-#     page.get_by_label("Clienten overzicht").click()
-#     page.locator("#Verzekerdennummer_Value").fil(config['PvO']['verznr1'])
-#     page.get_by_role("button", name="ondersteuner-client-zoeken-button").click()
-
-# #    page.locator('input[placeholder="#Name"]').fill(config['PvO']['relnr'])
-#     page.locator("#Name").fill(config['PvO']['relnr'])
-#     page.get_by_role("button", name="Inloggen").click()
-#     page.get_by_label("Knop gebruikers menu").click()
-    
     page.get_by_role("link", name="Cliënten overzicht").click()
     page.get_by_label("Verzekerdennummer of BSN").click()
     page.get_by_label("Verzekerdennummer of BSN").fill(config['PvO']['verznr1'])
     page.click('#ondersteuner-client-zoeken-button')
     page.click('xpath=//*[@id="summarylist-clienten-form"]/div/ul/li/button')
+    page.click('button[name="action:NaarLink"]')
+    page.locator('button:has-text("Accepteren")').click()
+    page.click('#ONDPORT-STUB-SSO-Ondersteunersportaal-Menzis_consument2020')
         
     time.sleep(10)
