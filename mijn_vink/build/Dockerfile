@@ -1,6 +1,6 @@
 FROM python:3.11
 
-#USER root
+USER root
 
 RUN apt-get update && apt-get install -yy nano curl && \
     pip install Appium-Python-Client pytest-playwright && \
