@@ -39,22 +39,26 @@ def test_inloggen_PvO(page: Page, page_url: str):
         page.goto(page_url)
     else:
         print("geen emailadres controle")
-
-#     page.get_by_label("Clienten overzicht").click()
-#     page.locator("#Verzekerdennummer_Value").fil(config['PvO']['verznr1'])
-#     page.get_by_role("button", name="ondersteuner-client-zoeken-button").click()
-
-# #    page.locator('input[placeholder="#Name"]').fill(config['PvO']['relnr'])
-#     page.locator("#Name").fill(config['PvO']['relnr'])
-#     page.get_by_role("button", name="Inloggen").click()
-#     page.get_by_label("Knop gebruikers menu").click()
     
+    page.get_by_label("Knop gebruikers menu").click()
+    page.click('a[href="/gegevens"]')
+        
+    page.click('a[href="/gegevens/telefoonnummer-wijzigen"]')
     
-    page.get_by_role("link", name="Cliënten overzicht").click()
-    page.get_by_label("Verzekerdennummer of BSN").click()
-    page.get_by_label("Verzekerdennummer of BSN").fill("8631193279")
-    page.get_by_role("button", name="Zoeken").click()
-    #page.get_by_role("button", name="action:GaNaarClientDetails").click()
-    page.click('text="8631193279"')
-    
-    time.sleep(10)
+    #telefoonnummer wijzigen value +1
+    selector = 'input[data-fieldname="MobielTelefoonnummer"]'
+    page.wait_for_selector(selector)
+    current_value = page.query_selector(selector).get_attribute('value')
+    numeric_part = ''.join(filter(str.isdigit, current_value))
+        
+    if numeric_part:
+        new_numeric_value = numeric_part[:-1] + str(int(numeric_part[-1]) + 1)
+            
+        new_value = f"{new_numeric_value[:3]}-{new_numeric_value[3:]}"
+            
+        page.fill(selector, new_value)
+        print(f"Filled the input field with incremented value: {new_value}")
+    else:
+        print("The current value is not a valid phone number format.")
+                
+    page.get_by_role("button", name="Wijzigen").click()

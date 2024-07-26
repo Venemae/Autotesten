@@ -20,10 +20,7 @@ def test_inloggen_menzis(page: Page, page_url: str):
     page.locator('button:has-text("Accepteren")').click()
     page.locator('#navigationUserToggleButton').dblclick() 
 
-    # Wacht tot Loginstub zichtbaar is en klik
-    loginstub_button = page.locator('#VINKVINK-CONS-STUB').first
-    loginstub_button.wait_for(state='visible')
-    loginstub_button.click()
+    page.wait_for_selector('#VINKVINK-CONS-STUB').click()
     
     page.locator('input[placeholder="BSN"]').fill(config['Inloggen']['bsn'])
     page.get_by_role("button", name="Verzekerdennummer").dblclick()
